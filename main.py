@@ -26,3 +26,7 @@ print(f'Summary: {article.summary}')
 analysis = TextBlob(article.text)
 print(analysis.polarity)
 print(f'Sentiment: {"positive" if analysis.polarity > 0 else "negative" if analysis.polarity < 0 else "neutral"}')
+
+root = tk.Tk()
+root.title("Python News Article Summarizer")
+root.geometry('1200x600')
