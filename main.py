@@ -25,3 +25,4 @@ print(f'Summary: {article.summary}')
 # Sentimental Analysis
 analysis = TextBlob(article.text)
 print(analysis.polarity)
+print(f'Sentiment: {"positive" if analysis.polarity > 0 else "negative" if analysis.polarity < 0 else "neutral"}')
