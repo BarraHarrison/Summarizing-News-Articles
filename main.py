@@ -1,69 +1,89 @@
 import tkinter as tk
-import nltk 
+from tkinter import messagebox
+import nltk
 from textblob import TextBlob
 from newspaper import Article
-import nltk
+from newspaper.article import ArticleException
+
 nltk.download('punkt_tab')
+nltk.download('punkt')
+
+def clear_fields():
+    for field in [title, author, publication, summary, sentiment]:
+        field.config(state="normal")
+        field.delete('1.0', 'end')
+        field.config(state="disabled")
 
 def summarize():
-    pass
+    url = utext.get('1.0', 'end').strip()
+    if not url:
+        messagebox.showerror("Error", "Please enter a valid URL.")
+        return
 
+    try:
+        article = Article(url)
+        article.download()
+        article.parse()
+        article.nlp()
+    except ArticleException:
+        messagebox.showerror("Error", "Unable to fetch or parse the article. Please check the URL.")
+        return
+    except Exception as e:
+        messagebox.showerror("Error", f"An unexpected error occurred: {str(e)}")
+        return
 
-# nltk.download('punkt')
+    clear_fields()
 
-# url = 'https://edition.cnn.com/2023/04/02/us/tiktok-american-culture-effects-cec/index.html'
+    # Insert data into the textboxes
+    title.config(state="normal")
+    title.insert('1.0', article.title)
 
-# # The NLP work is done by the libraries
-# article = Article(url)
-# article.download()
-# article.parse()
+    author.config(state="normal")
+    author.insert('1.0', ", ".join(article.authors))
 
-# article.nlp()
+    publication.config(state="normal")
+    publication.insert('1.0', article.publish_date)
 
-# print(f'Title: {article.title}')
-# print(f'Authors: {article.authors}')
-# print(f'Publication Date: {article.publish_date}')
-# print(f'Summary: {article.summary}')
+    summary.config(state="normal")
+    summary.insert('1.0', article.summary)
 
-# # Sentimental Analysis
-# analysis = TextBlob(article.text)
-# print(analysis.polarity)
-# print(f'Sentiment: {"positive" if analysis.polarity > 0 else "negative" if analysis.polarity < 0 else "neutral"}')
+    analysis = TextBlob(article.text)
+    sentiment_result = "Positive" if analysis.polarity > 0 else "Negative" if analysis.polarity < 0 else "Neutral"
+    sentiment.config(state="normal")
+    sentiment.insert('1.0', f'Polarity: {analysis.polarity:.2f}, Sentiment: {sentiment_result}')
 
-# Creating the GUI using tkinter
+    for field in [title, author, publication, summary, sentiment]:
+        field.config(state="disabled")
+
+# GUI Setup
 root = tk.Tk()
 root.title("Python News Article Summarizer")
 root.geometry('1200x600')
 
-# Creating the individual buttons and textboxes
+# Layout
 tlabel = tk.Label(root, text='Title')
 tlabel.pack()
-title = tk.Text(root, height=1, width=140)
-title.config(state='disabled', bg='#dddddd')
+title = tk.Text(root, height=1, width=140, bg='#dddddd', state='disabled')
 title.pack()
 
 alabel = tk.Label(root, text='Author')
 alabel.pack()
-author = tk.Text(root, height=1, width=140)
-author.config(state='disabled', bg='#dddddd')
+author = tk.Text(root, height=1, width=140, bg='#dddddd', state='disabled')
 author.pack()
 
 plabel = tk.Label(root, text='Publication Date')
 plabel.pack()
-publication = tk.Text(root, height=1, width=140)
-publication.config(state='disabled', bg='#dddddd')
+publication = tk.Text(root, height=1, width=140, bg='#dddddd', state='disabled')
 publication.pack()
 
 slabel = tk.Label(root, text='Summary')
 slabel.pack()
-summary = tk.Text(root, height=20, width=140)
-summary.config(state='disabled', bg='#dddddd')
+summary = tk.Text(root, height=20, width=140, bg='#dddddd', state='disabled')
 summary.pack()
 
 selabel = tk.Label(root, text='Sentiment Analysis')
 selabel.pack()
-sentiment = tk.Text(root, height=1, width=140)
-sentiment.config(state='disabled', bg='#dddddd')
+sentiment = tk.Text(root, height=1, width=140, bg='#dddddd', state='disabled')
 sentiment.pack()
 
 ulabel = tk.Label(root, text='URL')
@@ -71,7 +91,13 @@ ulabel.pack()
 utext = tk.Text(root, height=1, width=140)
 utext.pack()
 
-btn = tk.Button(root, text="Summarize", command=summarize)
-btn.pack()
+frame = tk.Frame(root)
+frame.pack(pady=10)
+
+btn = tk.Button(frame, text="Summarize", command=summarize)
+btn.grid(row=0, column=0, padx=10)
+
+clear_btn = tk.Button(frame, text="Clear", command=clear_fields)
+clear_btn.grid(row=0, column=1, padx=10)
 
 root.mainloop()
