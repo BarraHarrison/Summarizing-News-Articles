@@ -5,6 +5,9 @@ from newspaper import Article
 import nltk
 nltk.download('punkt_tab')
 
+def summarize():
+    pass
+
 
 # nltk.download('punkt')
 
@@ -68,7 +71,7 @@ ulabel.pack()
 utext = tk.Text(root, height=1, width=140)
 utext.pack()
 
-btn = tk.Button(root, text="Summarize")
+btn = tk.Button(root, text="Summarize", command=summarize)
 btn.pack()
 
 root.mainloop()
