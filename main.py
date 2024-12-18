@@ -22,3 +22,6 @@ print(f'Authors: {article.authors}')
 print(f'Publication Date: {article.publish_date}')
 print(f'Summary: {article.summary}')
 
+# Sentimental Analysis
+analysis = TextBlob(article.text)
+print(analysis.polarity)
