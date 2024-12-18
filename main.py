@@ -6,27 +6,49 @@ import nltk
 nltk.download('punkt_tab')
 
 
-nltk.download('punkt')
+# nltk.download('punkt')
 
-url = 'https://edition.cnn.com/2023/04/02/us/tiktok-american-culture-effects-cec/index.html'
+# url = 'https://edition.cnn.com/2023/04/02/us/tiktok-american-culture-effects-cec/index.html'
 
-# The NLP work is done by the libraries
-article = Article(url)
-article.download()
-article.parse()
+# # The NLP work is done by the libraries
+# article = Article(url)
+# article.download()
+# article.parse()
 
-article.nlp()
+# article.nlp()
 
-print(f'Title: {article.title}')
-print(f'Authors: {article.authors}')
-print(f'Publication Date: {article.publish_date}')
-print(f'Summary: {article.summary}')
+# print(f'Title: {article.title}')
+# print(f'Authors: {article.authors}')
+# print(f'Publication Date: {article.publish_date}')
+# print(f'Summary: {article.summary}')
 
-# Sentimental Analysis
-analysis = TextBlob(article.text)
-print(analysis.polarity)
-print(f'Sentiment: {"positive" if analysis.polarity > 0 else "negative" if analysis.polarity < 0 else "neutral"}')
+# # Sentimental Analysis
+# analysis = TextBlob(article.text)
+# print(analysis.polarity)
+# print(f'Sentiment: {"positive" if analysis.polarity > 0 else "negative" if analysis.polarity < 0 else "neutral"}')
 
+# Creating the GUI using tkinter
 root = tk.Tk()
 root.title("Python News Article Summarizer")
 root.geometry('1200x600')
+
+# Creating the individual buttons and textboxes
+tlabel = tk.Label(root, text='Title')
+tlabel.pack()
+title = tk.Text(root, height=1, width=140)
+title.config(state='disabled', bg='#dddddd')
+title.pack()
+
+alabel = tk.Label(root, text='Author')
+alabel.pack()
+author = tk.Text(root, height=1, width=140)
+author.config(state='disabled', bg='#dddddd')
+author.pack()
+
+plabel = tk.Label(root, text='Publication Date')
+plabel.pack()
+publication = tk.Text(root, height=1, width=140)
+publication.config(state='disabled', bg='#dddddd')
+publication.pack()
+
+root.mainloop()
