@@ -2,6 +2,9 @@ import tkinter as tk
 import nltk 
 from textblob import TextBlob
 from newspaper import Article
+import nltk
+nltk.download('punkt_tab')
+
 
 nltk.download('punkt')
 
@@ -18,3 +21,4 @@ print(f'Title: {article.title}')
 print(f'Authors: {article.authors}')
 print(f'Publication Date: {article.publish_date}')
 print(f'Summary: {article.summary}')
+
